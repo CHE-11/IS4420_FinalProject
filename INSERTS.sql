@@ -186,6 +186,33 @@ VALUES (61, 65000.00, 1000.00),
        (74, 97500.00, 1000.00),
        (75, 53400.00, 1000.00);
 
+DROP TABLE IF EXISTS EmployeeEmail;
+CREATE TABLE EmployeeEmail
+( EmployeeID	SMALLINT NOT NULL,
+  EmailAddress	VARCHAR(254) NOT NULL,
+  PrimaryEmailFlag CHAR(1) NOT NULL DEFAULT 'Y',
+  CONSTRAINT PK_EmployeeEmail_EmployeeID_EmailAddress PRIMARY KEY ( EmployeeID, EmailAddress),
+  CONSTRAINT FK_EmployeeEmail_EmployeeID FOREIGN KEY ( EmployeeID ) REFERENCES Employees,
+  CONSTRAINT CHECK_EmployeeEmail_PrimaryEmailFlag CHECK ( PrimaryEmailFlag IN ( 'Y', 'N' ) )
+);
+
+INSERT INTO EmployeeEmail (EmployeeID, EmailAddress, PrimaryEmailFlag)
+VALUES (1, 'johndoe123@gmail.com', 'Y'),
+	   (2, 'jjohnson@yahoo.com', 'N'),
+	   (3, 'augusthmartin4@yahoo.com', 'Y'),
+	   (4, 'nellahayes@comcast.net', 'Y'),
+	   (5, 'siannmosleyy@gmail.com', 'Y'),
+	   (6, 'marcuswashingtonb@aol.com', 'N'),
+	   (7, 'shaybeckster456@utah.edu', 'N'),
+	   (8, 'fahimdrew834@gmail.com', 'Y'),
+	   (9, 'kristirhoffman125@gmail.com', 'N'),
+	   (10, 'elowenlegge513@yahoo.com', 'Y'),
+	   (11, 'eliotschultz504@yahoo.com', 'N'),
+	   (12, 'beyoncethequeen58@aol.com', 'N'),
+	   (13, 'kairoowe7456@gmail.com', 'Y'),
+	   (14, 'kamranoakleyl338@gmail.com', 'N'),
+	   (15, 'trealbert6234@gmail.com', 'Y');
+
 
 -- CUSTOMER
 INSERT INTO CUSTOMER (FirstName,LastName, BillingStreetAddress,BillingStateCode, BillingZipCode, InsuranceCompany, InsuranceID)
@@ -350,18 +377,117 @@ VALUES (1, 1, '2002-03-12 ', '13:00:00', '7247 Pulaski Dr.', 21228, 'MT'),
 
 -- ORDER_LINE
 INSERT INTO ORDER_LINE (OrderID,ProductID,Price,Quantity)
-VALUES (1, 1, 100, 1);
+VALUES (1, 1, 100, 1),
+(2, 1, 100, 3),
+(3, 2, 300, 2),
+(4, 3, 600, 1),
+(5, 1, 100, 2),
+(6, 4, 100, 2),
+(7, 2, 300, 3),
+(8, 2, 300, 3),
+(9, 5, 300, 1),
+(10, 5, 300, 1),
+(11, 6, 600, 1),
+(12, 9, 600, 2),
+(13, 2, 300, 4),
+(14, 1, 100, 8),
+(15, 1, 100, 5),
+(1, 2, 300, 2),
+(2, 8, 300, 3),
+(3, 1, 100, 2),
+(4, 15, 1000, 1),
+(5, 14, 600, 2),
+(6, 13, 500, 1),
+(7, 4, 100, 3),
+(8, 1, 100, 2),
+(9, 2, 300, 3),
+(10, 2, 300, 1),
+(11, 3, 600, 2),
+(12, 1, 100, 5),
+(13, 12, 500, 1),
+(14, 10, 50, 4),
+(15, 2, 300, 1),
+(1, 11, 250, 2),
+(2, 2, 300, 1),
+(3, 11, 250, 4),
+(4, 5, 300, 2),
+(5, 10, 50, 4),
+(6, 2, 300, 5),
+(7, 1, 100, 1),
+(8, 15, 1000, 1),
+(9, 15, 1000, 2),
+(10, 14, 600, 2);
+
 
 
 -- SHIPMENT_LOCATION
 INSERT INTO SHIPMENT_LOCATION (ShipmentLocationID,LocationName,StreetAddress,StateCode,ZipCode)
-VALUES (1, 'Warehouse #2', '123 Main St', 'CA', 12345);
+VALUES (1, 'Warehouse #1', '123 Main St', 'CA', 12345),
+(2, 'Warehouse #2', '200 E 300 S', 'UT', 23451),
+(3, 'Warehouse #3', '24 Frederick St', 'GA', 34512),
+(4, 'Warehouse #4', '22 Jeremy Ln', 'TN', 45123),
+(5, 'Warehouse #5', '5 Renzo Way', 'PA', 51234),
+(6, 'Warehouse #6', '124 Main St', 'CA', 12345),
+(7, 'Warehouse #7', '300 E 300 S', 'UT', 23451),
+(8, 'Warehouse #8', '34 Frederick St', 'GA', 34512),
+(9, 'Warehouse #9', '62 Jeremy Ln', 'TN', 45123),
+(10, 'Warehouse #10', '15 Renzo Way', 'PA', 51234),
+(11, 'Warehouse #11', '125 Main St', 'CA', 12345),
+(12, 'Warehouse #12', '400 E 300 S', 'UT', 23451),
+(13, 'Warehouse #13', '44 Frederick St', 'GA', 34512),
+(14, 'Warehouse #14', '82 Jeremy Ln', 'TN', 45123),
+(15, 'Warehouse #15', '25 Renzo Way', 'PA', 51234),
+(16, 'Corporate Truck #1', '120 Huron Ave', 'WA', 54321),
+(17, 'Corporate Truck #2', '34 Wheat St', 'RI', 43215),
+(18, 'Corporate Truck #3', '78 Yew St', 'WV', 32154),
+(19, 'Corporate Truck #4', '4 E Grey Ave', 'NH', 21543),
+(20, 'Corporate Truck #5', '678 Barrier Reef Ln', 'IN', 15432),
+(21, 'Corporate Truck #6', '121 Huron Ave', 'WA', 54321),
+(22, 'Corporate Truck #7', '35 Wheat St', 'RI', 43215),
+(23, 'Corporate Truck #8', '79 Yew St', 'WV', 32154),
+(24, 'Corporate Truck #9', '5 E Grey Ave', 'NH', 21543),
+(25, 'Corporate Truck #10', '679 Barrier Reef Ln', 'IN', 15432),
+(26, 'Corporate Truck #11', '122 Huron Ave', 'WA', 54321),
+(27, 'Corporate Truck #12', '36 Wheat St', 'RI', 43215),
+(28, 'Corporate Truck #13', '80 Yew St', 'WV', 32154),
+(29, 'Corporate Truck #14', '6 E Grey Ave', 'NH', 21543),
+(30, 'Corporate Truck #15', '680 Barrier Reef Ln', 'IN', 15432),
+(31, 'Internal Truck #1', '40 E 200 S', 'VA', 23456),
+(32, 'Internal Truck #2', '90 Fringe Dr', 'ID', 34562),
+(33, 'Internal Truck #3', '53 Anderson St', 'ND', 45623),
+(34, 'Internal Truck #4', '221B Baker St', 'NC', 56234),
+(35, 'Internal Truck #5', '34 White Ave', 'SC', 62345),
+(36, 'Internal Truck #6', '50 E 200 S', 'VA', 23456),
+(37, 'Internal Truck #7', '100 Fringe Dr', 'ID', 34562),
+(38, 'Internal Truck #8', '63 Anderson St', 'ND', 45623),
+(39, 'Internal Truck #9', '221A Baker St', 'NC', 56234),
+(40, 'Internal Truck #10', '44 White Ave', 'SC', 62345),
+(41, 'Internal Truck #11', '60 E 200 S', 'VA', 23456),
+(42, 'Internal Truck #12', '110 Fringe Dr', 'ID', 34562),
+(43, 'Internal Truck #13', '73 Anderson St', 'ND', 45623),
+(44, 'Internal Truck #14', '221C Baker St', 'NC', 56234),
+(45, 'Internal Truck #15', '54 White Ave', 'SC', 62345);
+
 
 
 -- PRODUCT_LOCATION
 SELECT * FROM ORDER_HEADER
 INSERT INTO PRODUCT_LOCATION (ShipmentLocationID)
-VALUES (1);
+VALUES (1),
+	   (2),
+	   (3),
+	   (4),
+	   (5),
+	   (6),
+	   (7),
+	   (8),
+	   (9),
+	   (10),
+	   (11),
+	   (12),
+	   (13),
+	   (14),
+	   (15);
 
 
 -------------------------------------------------------------------------
@@ -369,20 +495,79 @@ VALUES (1);
 -- CORPORATE_TRUCKING
 SELECT * FROM SHIPMENT_LOCATION
 INSERT INTO CORPORATE_TRUCKING (ShipmentLocationID,CorporateTruckID)
-VALUES (1, 1);
+VALUES (16, 1),
+(17, 2),
+(18, 3),
+(19, 4),
+(20, 5),
+(21, 6),
+(22, 7),
+(23, 8),
+(24, 9),
+(25, 10),
+(26, 11),
+(27, 12),
+(28, 13),
+(29, 14),
+(30, 15);
+
 
 -- WAREHOUSE
 SELECT * FROM SHIPMENT_LOCATION
-INSERT INTO WAREHOUSE (ShipmentLocationID,BinNumber,AisleNumber)
-VALUES (1, 1, 1);
+INSERT INTO WAREHOUSE (ShipmentLocationID,WarehouseID)
+VALUES (1, 1),
+(2, 2),
+(3, 3),
+(4, 4),
+(5, 5),
+(6, 6),
+(7, 7),
+(8, 8),
+(9, 9),
+(10, 10),
+(11, 11),
+(12, 12),
+(13, 13),
+(14, 14),
+(15, 15);
+
 
 -- INTERNAL_TRUCK
 SELECT * FROM SHIPMENT_LOCATION
 INSERT INTO INTERNAL_TRUCK (ShipmentLocationID,InternalTruckID)
-VALUES (1, 1);
+VALUES (31, 1),
+(32, 2),
+(33, 3),
+(34, 4),
+(35, 5),
+(36, 6),
+(37, 7),
+(38, 8),
+(39, 9),
+(40, 10),
+(41, 11),
+(42, 12),
+(43, 13),
+(44, 14),
+(45, 15);
+
 
 -- INTRASTATE_LINE
 SELECT * FROM SHIPMENT_LOCATION
 INSERT INTO INTRASTATE_LINE (LineID,LineName)
-VALUES (1, 'A');
+VALUES (1, 'I-15'),
+(2, 'I-18'),
+(3, 'I-90'),
+(4, 'I-45'),
+(5, 'I-280'),
+(6, 'I-94'),
+(7, 'I-315'),
+(8, 'I-115'),
+(9, 'I-35'),
+(10, 'I-29'),
+(11, 'I-129'),
+(12, 'I-235'),
+(13, 'I-74'),
+(15, 'I-680');
+
 

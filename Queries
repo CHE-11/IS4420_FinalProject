@@ -1,0 +1,66 @@
+USE FinalProject_Group8;
+GO
+
+-- Query #1
+-- Get all of the SalesReps commissions and sort them descending by value. 
+SELECT E.EmployeeID,
+	   CONCAT (E.FirstName, ' ', COALESCE(E.MiddleName, ' '),'', E.LastName) AS EmployeeName,
+	   SR.Commissions
+FROM EMPLOYEES AS E
+INNER JOIN SALES_REP AS SR ON E.EmployeeID = SR.EmployeeID
+ORDER BY SR.Commissions DESC;
+
+
+-- Query #2
+-- Show inventory of products and when they had their prices last changed
+SELECT P.ProductName,
+	   P.ProductDescription,
+	   P.SalesPrice,
+	   PPH.PriceChangeDate AS LastPriceChange
+FROM PRODUCT AS P
+LEFT OUTER JOIN PRODUCT_PRICE_HISTORY AS PPH ON P.ProductID = PPH.ProductID
+ORDER BY P.SalesPrice DESC;
+
+-- Query #3
+-- See wage expense of all employees
+SELECT E.EmployeeID,
+	   CONCAT ( E.FirstName, ' ', E.LastName ) AS EmployeeName,
+	   SUM ( WE.HourlyPay  * 40) AS WarehousePay,
+	   SUM ( (T.HourlyPay * 40) + (T.MilesDriven * T.PayPerMile) ) AS TruckerPay,
+	   A.Salary AS AdministrationPay,
+	   SUM ( SR.BaseSalary + SR.Commissions) AS SalesRepPay
+FROM EMPLOYEES AS E
+LEFT OUTER JOIN WAREHOUSE_EMP AS WE ON E.EmployeeID = WE.EmployeeID
+LEFT OUTER JOIN TRUCKER AS T ON E.EmployeeID = T.EmployeeID
+LEFT OUTER JOIN SERVICE_MEMBER AS SM ON E.EmployeeID = SM.EmployeeID
+LEFT OUTER JOIN ADMINISTRATION AS A ON E.EmployeeID = A.EmployeeID
+LEFT OUTER JOIN SALES_REP AS SR ON E.EmployeeID = SR.EmployeeID
+GROUP BY E.EmployeeID, E.FirstName, E.LastName, A.Salary;
+
+
+-- Query #4
+-- Show Salesman sales
+-- Aggregate the number of orders the salesman are on
+SELECT SR.EmployeeID,
+	   CONCAT (E.FirstName, ' ', COALESCE(E.MiddleName, ' '),'', E.LastName) AS EmployeeName, 
+	   COUNT(OH.OrderID) AS CurrentOrders
+FROM SALES_REP AS SR
+INNER JOIN EMPLOYEES AS E ON SR.EmployeeID = E.EmployeeID
+LEFT OUTER JOIN ORDER_HEADER AS OH ON SR.EmployeeID = OH.EmployeeID
+GROUP BY SR.EmployeeID, E.FirstName, E.MiddleName, E.LastName
+ORDER BY CurrentOrders DESC;
+
+-- Query #5
+-- Show product locations for those in warehouses
+SELECT W.ShipmentLocationID AS Warehouse,
+	   SL.LocationName AS WarehouseName,
+	   P.ProductName AS ProductName,
+	   OL.Quantity AS Quantity
+FROM WAREHOUSE AS W
+LEFT OUTER JOIN PRODUCT_LOCATION AS PL ON W.ShipmentLocationID = PL.ShipmentLocationID
+LEFT OUTER JOIN ORDER_LINE AS OL ON PL.OrderProduct = OL.OrderProduct
+INNER JOIN PRODUCT AS P ON OL.ProductID = P.ProductID
+INNER JOIN SHIPMENT_LOCATION AS SL ON W.ShipmentLocationID = SL.ShipmentLocationID
+GROUP BY W.ShipmentLocationID, SL.LocationName, P.ProductName, OL.Quantity;
+
+
